@@ -1,0 +1,58 @@
+services:
+  web:
+    build: .
+    image: dsxailab/dujiaoka
+    environment:
+        #- INSTALL=false
+      - INSTALL=true
+        #- MODIFY=true
+    volumes:
+      - ./env.conf:/dujiaoka/.env
+      - ./uploads:/dujiaoka/public/uploads
+      - ./storage:/dujiaoka/storage
+        #- ./resources/lang/zh_CN/dujiaoka.php:/dujiaoka/resources/lang/zh_CN/dujiaoka.php
+    ports:
+      - 56789:80
+    restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  db:
+    image: mariadb:focal
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=TheTestPassword
+      - MYSQL_DATABASE=dujiaoka
+      - MYSQL_USER=dujiaoka
+      - MYSQL_PASSWORD=TheTestPassword
+    volumes:
+      - ./mysql:/var/lib/mysql
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+  redis:
+    image: redis:alpine
+    restart: always
+    volumes:
+      - ./redis:/data
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+  epusdt:
+    build: 
+      context: .
+      dockerfile: Dockerfile.Epusdt
+    image: dsxailab/epusdt
+    restart: always
+    volumes:
+      - ./epusdt.conf:/usdt/.env
+    ports:
+      - 8000:8000
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
