@@ -33,15 +33,6 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-  redis:
-    image: redis:alpine
-    restart: always
-    volumes:
-      - ./redis:/data
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
   epusdt:
     build: 
       context: .
@@ -56,3 +47,30 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+  epusdtdb:
+    image: mariadb:focal
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=TheTestPassword
+      - MYSQL_DATABASE=epusdt
+      - MYSQL_USER=dujiaoka
+      - MYSQL_PASSWORD=TheTestPassword
+    volumes:
+      - ./epusdtmysql:/var/lib/mysql
+    ports:
+      - 3306:3306
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+  redis:
+    image: redis:alpine
+    restart: always
+    volumes:
+      - ./redis:/data
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    ports:
+     - 6379:6379
