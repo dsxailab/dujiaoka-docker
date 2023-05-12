@@ -42,7 +42,7 @@ services:
     volumes:
       - ./epusdt.conf:/usdt/.env
     ports:
-      - 8000:8000
+      - 8880:8880
     logging:
       options:
         max-size: "10m"
