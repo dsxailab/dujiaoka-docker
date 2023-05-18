@@ -18,5 +18,7 @@ RUN set -xe \
     && mv /dujiaoka/storage /dujiaoka/storage_bak \
     && sed -i "s?\$proxies;?\$proxies=\'\*\*\';?" /dujiaoka/app/Http/Middleware/TrustProxies.php \
     && rm -rf /root/.composer/cache/ /tmp/*
+# workaround the issue that the quick search is not visible on phone
+RUN sed -i 's/d-md-inline-block/d-sm-inline-block d-block/' ./vendor/dcat/laravel-admin/resources/views/grid/quick-search.blade.php
 
 CMD /start.sh
