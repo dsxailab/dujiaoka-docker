@@ -3,5 +3,6 @@
 /mysql/
 /redis/
 /storage/
+/uploads/
 /epusdtmysql/
 /ib_logfile0

@@ -1,21 +1,12 @@
 #!/bin/sh
 
-if [ -f "/dujiaoka/.env" ]; then
-    if [ ! -d "./storage/app" ]; then
-        mv -n storage_bak/* storage/
-    fi
+if [ -f "/app/.env" ]; then
     if [ "$INSTALL" != "true" ]; then
         echo "ok" > install.lock
     fi
 
-    bash /dujiaoka/start-hook.sh
-
-    chmod -R 777 storage
-
-    php artisan clear-compiled
-    php artisan optimize
-    php artisan migrate
-
+    bash /app/start-hook.sh
+    php artisan queue:work >/tmp/work.log 2>&1 &
     supervisord
 else
     echo "配置文件不存在，请根据文档修改配置文件！"

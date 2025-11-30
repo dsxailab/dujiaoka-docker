@@ -1,18 +1,18 @@
 services:
   web:
     build: .
-    image: dsxailab/dujiaoka
+    container_name: web
+    image: ghcr.io/dsxailab/dujiaoka:latest
     environment:
-      - INSTALL=false
-        #- INSTALL=true
-        #- MODIFY=true
+      INSTALL: true
+      WEB_DOCUMENT_ROOT: "/app/public"
+      TZ: Asia/Shanghai
     volumes:
-      - ./env.conf:/dujiaoka/.env
-      - ./uploads:/dujiaoka/public/uploads
-      - ./storage:/dujiaoka/storage
-        #- ./resources/lang/zh_CN/dujiaoka.php:/dujiaoka/resources/lang/zh_CN/dujiaoka.php
+      - ./env.conf:/app/.env
+      - ./uploads:/app/public/uploads
+      - ./storage:/app/storage
     ports:
-      - 56789:80
+      - 80:80
     restart: always
     logging:
       options:
@@ -20,6 +20,7 @@ services:
         max-file: "3"
 
   db:
+    container_name: db
     image: mariadb:focal
     restart: always
     environment:
@@ -34,6 +35,7 @@ services:
         max-size: "10m"
         max-file: "3"
   epusdt:
+    container_name: usdt
     build: 
       context: .
       dockerfile: Dockerfile.Epusdt
@@ -48,6 +50,7 @@ services:
         max-size: "10m"
         max-file: "3"
   epusdtdb:
+    container_name: usdt_db
     image: mariadb:focal
     restart: always
     environment:
@@ -57,13 +60,12 @@ services:
       - MYSQL_PASSWORD=TheTestPassword
     volumes:
       - ./epusdtmysql:/var/lib/mysql
-    ports:
-      - 3306:3306
     logging:
       options:
         max-size: "10m"
         max-file: "3"
   redis:
+    container_name: redis
     image: redis:alpine
     restart: always
     volumes:
