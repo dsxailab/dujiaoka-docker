@@ -12,7 +12,8 @@ services:
       - ./uploads:/app/public/uploads
       - ./storage/logs:/app/storage/logs
     ports:
-      - 80:80
+      - 56789:80
+      - 56788:443
     restart: always
     logging:
       options:
