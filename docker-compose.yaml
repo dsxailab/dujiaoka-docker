@@ -10,7 +10,7 @@ services:
     volumes:
       - ./env.conf:/app/.env
       - ./uploads:/app/public/uploads
-      - ./storage:/app/storage
+      - ./storage/logs:/app/storage/logs
     ports:
       - 80:80
     restart: always
